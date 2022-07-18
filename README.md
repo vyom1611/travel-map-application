@@ -1,6 +1,6 @@
 # travel-map-application
 
-Creating a Map app with pins and reviews using Google Maps API
+Creating a Map app with pins and reviews using Mapbox API
 
 Current Dependencies:
 
@@ -10,3 +10,5 @@ Backend:
     - MongoDB Atlas
     - Nodemon
     - dotenv
+    - Mapbox
+    - react-map-gl
