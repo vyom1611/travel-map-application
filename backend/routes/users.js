@@ -8,6 +8,11 @@ const User = require("../models/User");
 //Register
 router.post("/register", async (req, res) => {
     try {
+
+        //Generating password
+        const salt = await bcrypt.genSalt(10)
+        //Hasing password
+        const hashedPassword = await bcrypt.hash(req.body.password)
         //Create new user
         const newUser = new User({
             username: res.body.username,
@@ -16,19 +21,13 @@ router.post("/register", async (req, res) => {
         })
 
 
-        //Generating password
-        const salt = await bcrypt.genSalt(10)
-            //Hasing password
-            const hashedPassword = await bcrypt.hash(req.body.password)
-
         //Saving user to database
         const user = await newUser.save()
         //Sending OK status with the user ID from the database
         res.status(200).json(user._id)
-        
-    } catch (error) {
+        } catch (err) {
         //Logging errors on every step
-        res.status(500).json(error);
+        res.status(500).json(err);
     }
 })
 
@@ -47,7 +46,7 @@ router.post("/login", async (req, res) => {
         !user && res.status(400).json("Wrong password or user");
 
         //Step 2:
-        const validPassword = await bcrypt.compare(req.body.password, user);
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
 
         //Step 3:
         res.status(200).json({ _id: user._id, username: user.username});
