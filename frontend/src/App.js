@@ -35,20 +35,30 @@ function App() {
         getPins()
     }, []);
 
-    const handleMarkerClick = (id) => {
-        setCurrentPlaceId(id)
+    const handleMarkerClick = (id, lat, long) => {
+        setCurrentPlaceId(id);
+        setViewport({...viewport, longitude: long, latitude: lat})
     }
-    
-    
+
+
+    const handleAddClick = (event) => {
+        const [long, lat] = event.lngLat;
+        setNewPlace({
+            lat, long
+        })
+    };
+
     return (
         <div className="App">
             <ReactMapGL 
             {...viewport}
             mapboxApiAccessToken={process.env.REACT_APP_MAPBOX}
             onViewportChange={nextViewport => setViewport(nextViewport)}
-            mapStyle="mapbox://styles/vyom1611/cl5qlsd9k006115nxmppra8sr">
+            mapStyle="mapbox://styles/vyom1611/cl5qlsd9k006115nxmppra8sr"
+            onDblClick={handleAddClick}
+            transitionDuration={200}>
 
-            {console.log(pins)}
+
             {pins.map(p => (
                 <>
                 <Marker
@@ -60,10 +70,10 @@ function App() {
                 <Room
                     style={{
                     fontSize: 7 * viewport.zoom,
-                    color: p.Username === currentUser ? "tomato" : "slateblue",
+                    color: p.username === currentUser ? "tomato" : "slateblue",
                     cursor: "pointer",
                     }}
-                    onClick={()=> handleMarkerClick(p._id)}
+                    onClick={()=> handleMarkerClick(p._id, p.latitude, p.longitude)}
                 />
                 </Marker>
                 {p._id === currentPlaceId && (
@@ -95,6 +105,34 @@ function App() {
                 )}
                 </>
             ))}
+                {newPlace && (
+                <Popup
+                    latitude={newPlace.lat}
+                    longitude={newPlace.long}
+                    closeButton={true}
+                    closeOnClick={false}
+                    anchor="top"
+                    onClose={() => setNewPlace(null)}
+                >
+                    <div>
+                        <form>
+                            <label>Title</label>
+                            <input placeholder="Enter a Title"/>
+                            <label>Review</label>
+                            <textarea placeholder="Write something about this place"/>
+                            <label>Rating</label>
+                            <select>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            <button className="submitButton" type="submit">Create Pin</button>
+                        </form>
+                    </div>
+                </Popup>
+                )}
             </ReactMapGL>
         </div>
     )

@@ -29,3 +29,30 @@ label {
 .date {
     font-size: 10px;
 }
+
+form {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+input::placeholder, textarea::placeholder {
+    font-size: 12px;
+    color: #a6a4a4;
+}
+
+.submitButton {
+    border: None;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    background-color: tomato;
+    cursor: pointer;
+}
