@@ -8,10 +8,13 @@ import "../src/app.css"
 
 function App() {
 
-    const currentUser = "myname"
+    const currentUser = "yahf"
     const [pins, setPins] = useState([])
     const [currentPlaceId, setCurrentPlaceId] = useState(null)
     const [newPlace, setNewPlace] = useState(null)
+    const [title, setTitle] = useState(null)
+    const [desc, setDesc] = useState(null)
+    const [rating, setRating] = useState(0)
     const [viewport, setViewport] = useState({
         width: "100vw",
         height: "100vw",
@@ -20,7 +23,45 @@ function App() {
         zoom: 8
       });
 
-    //For when page refreshes and we want the map to be focused where the pin is
+    const handleMarkerClick = (id, lat, long) => {
+        setCurrentPlaceId(id);
+        setViewport({...viewport, longitude: long, latitude: lat})
+    }
+
+    const handleAddClick = (event) => {
+        const [long, lat] = event.lngLat;
+        setNewPlace({
+            longitude: long,
+            latitude: lat,
+        })
+        console.log(newPlace)
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        //Assigning properties of a new pin
+        const newPin = {
+            username: currentUser,
+            title: title,
+            desc: desc,
+            rating: rating,
+            latitude: newPlace.latitude,
+            longitude: newPlace.longitude,
+        }
+
+        //Posting the new pin to database/backend
+        try {
+            const res = await axios.post("/pins", newPin)
+            setPins([...pins, res.data])
+            //Removing saved pin from create new pin popup
+            setNewPlace(null)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    //For when page refreshes, and we want the map to be focused where the pin is
     useEffect(() => {
         const getPins = async () => {
             try {
@@ -35,18 +76,6 @@ function App() {
         getPins()
     }, []);
 
-    const handleMarkerClick = (id, lat, long) => {
-        setCurrentPlaceId(id);
-        setViewport({...viewport, longitude: long, latitude: lat})
-    }
-
-
-    const handleAddClick = (event) => {
-        const [long, lat] = event.lngLat;
-        setNewPlace({
-            lat, long
-        })
-    };
 
     return (
         <div className="App">
@@ -107,21 +136,21 @@ function App() {
             ))}
                 {newPlace && (
                 <Popup
-                    latitude={newPlace.lat}
-                    longitude={newPlace.long}
+                    latitude={newPlace.latitude}
+                    longitude={newPlace.longitude}
                     closeButton={true}
                     closeOnClick={false}
                     anchor="top"
                     onClose={() => setNewPlace(null)}
                 >
                     <div>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <label>Title</label>
-                            <input placeholder="Enter a Title"/>
+                            <input placeholder="Enter a Title" onChange={(event) => setTitle(event.target.value)}/>
                             <label>Review</label>
-                            <textarea placeholder="Write something about this place"/>
+                            <textarea placeholder="Write something about this place" onChange={(event) => setDesc(event.target.value)}/>
                             <label>Rating</label>
-                            <select>
+                            <select onChange={(event) => setRating(event.target.value)}>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>

@@ -9,7 +9,7 @@ dotenv.config();
 
 app.use(express.json());
 
-mongoose 
+mongoose
  .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
