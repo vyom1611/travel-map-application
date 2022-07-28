@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 import { Room, Star } from '@material-ui/icons';
 import axios from "axios";
-import {format} from "timeago.js";
+import { format } from "timeago.js";
 
 import "../src/app.css"
+import Register from "./components/Register";
 
 function App() {
 
-    const currentUser = "yahf"
+    const [currentUser, setCurrentUser] = useState(null)
     const [pins, setPins] = useState([])
     const [currentPlaceId, setCurrentPlaceId] = useState(null)
     const [newPlace, setNewPlace] = useState(null)
@@ -120,11 +121,7 @@ function App() {
                     <p className='desc'>{p.desc}</p>
                     <label>Rating</label>
                     <div className="stars">
-                        <Star className='star'/>
-                        <Star className='star'/>
-                        <Star className='star'/>
-                        <Star className='star'/>
-                        <Star className='star'/>
+                        {Array(p.rating).fill(<Star className="star" />)}
                     </div>
                     <label>Information</label>
                     <span className="username"> Created by <b>{p.username}</b> </span>
@@ -162,6 +159,11 @@ function App() {
                     </div>
                 </Popup>
                 )}
+                {currentUser ? (<button className="button-logout">Log Out</button>) : (<>
+                    <button className="button-login">Log In</button>
+                    <button className="button-register">Register</button></>
+                )}
+            <Register />
             </ReactMapGL>
         </div>
     )
