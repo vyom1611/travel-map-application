@@ -1,12 +1,13 @@
-body {
-    background-color: slateblue;
-}
 
 .registerContainer {
     padding: 20px;
+    top: -600px;
+    bottom: 0;
+    left: 0;
+    right: 0;
     margin: auto;
-    width: 250px;
-    height: 300px;
+    width: 300px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     background-color: aliceblue;
@@ -15,10 +16,42 @@ body {
     position: absolute;
 }
 
+input {
+    background-color: aliceblue;
+}
+
 button {
     border-radius: 5px;
     border: none;
     height: 30px;
     align-self: center;
-    width: auto;
+    width: max-content;
+    background-color: slateblue;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.logo {
+    color: slateblue;
+    font-weight: 700;
+}
+
+.failure {
+    color: red;
+    font-size: 12px;
+    text-align: center;
+}
+
+.success {
+    color: green;
+    font-size: 12px;
+    text-align: center;
+}
+
+.registerClose {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
 }
