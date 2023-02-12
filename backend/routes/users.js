@@ -11,12 +11,12 @@ router.post("/register", async (req, res) => {
 
         //Generating password
         const salt = await bcrypt.genSalt(10)
-        //Hasing password
-        const hashedPassword = await bcrypt.hash(req.body.password)
+        //Hashing password
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
         //Create new user
         const newUser = new User({
-            username: res.body.username,
-            email: res.body.email,
+            username: req.body.username,
+            email: req.body.email,
             password: hashedPassword
         })
 
@@ -29,7 +29,7 @@ router.post("/register", async (req, res) => {
         //Logging errors on every step
         res.status(500).json(err);
     }
-})
+});
 
 
 

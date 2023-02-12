@@ -16,7 +16,9 @@ export default function Login(props) {
         };
         try {
             const res = await axios.post("/users/login", user);
-            props.setShowLogin(false)
+            props.localStorage.setItem("user", res.data.username);
+            props.setCurrentUser(res.data.username);
+            setError(false);
         } catch (err) {
             setError(true);
         }
@@ -36,12 +38,12 @@ export default function Login(props) {
                     placeholder="password"
                     ref={passwordRef}
                 />
-                <button type="submit">
+                <button className="inpButton" type="submit">
                     Login
                 </button>
                 {error && <span className="failure">Something went wrong!</span>}
             </form>
-            <Close className="loginClose" onClick={() => props.setShowLogin(false)} />
+            <Close className="loginCancel" onClick={() => props.setShowLogin(false)} />
         </div>
     );
 }

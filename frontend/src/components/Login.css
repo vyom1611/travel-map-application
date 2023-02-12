@@ -16,11 +16,21 @@
     position: absolute;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: teal;
+    font-weight: 700;
+    padding-bottom: 30px;
+}
+
 input {
     background-color: aliceblue;
 }
 
-button {
+inpbutton {
+    top : -600px;
     border-radius: 5px;
     border: none;
     height: 30px;
@@ -32,24 +42,13 @@ button {
     cursor: pointer;
 }
 
-.logo {
-    color: teal;
-    font-weight: 700;
-}
-
 .failure {
     color: red;
     font-size: 12px;
     text-align: center;
 }
 
-.success {
-    color: green;
-    font-size: 12px;
-    text-align: center;
-}
-
-.loginClose {
+.loginCancel {
     position: absolute;
     top: 5px;
     right: 5px;

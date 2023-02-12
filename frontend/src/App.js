@@ -9,6 +9,7 @@ import Register from "./components/Register";
 import Login from './components/Login';
 
 function App() {
+    const localStorage = window.localStorage;
 
     const [currentUser, setCurrentUser] = useState(null)
 
@@ -65,8 +66,13 @@ function App() {
             //Removing saved pin from create new pin popup
             setNewPlace(null)
         } catch (err) {
-            console.log(err)
+            console.log("No NO NO")
         }
+    }
+
+    const handleLogOut = () => {
+        localStorage.removeItem("user");
+        currentUser(null);
     }
 
     //For when page refreshes, and we want the map to be focused where the pin is
@@ -166,12 +172,12 @@ function App() {
                     </div>
                 </Popup>
                 )}
-                {currentUser ? (<button className="button-logout">Log Out</button>) : (<>
+                {currentUser ? (<button className="button-logout" onClick={handleLogOut}>Log Out</button>) : (<>
                     <button className="button-login" onClick={() => setShowLogin(true)} >Log In</button>
                     <button className="button-register" onClick={() => setShowRegister(true)}>Register</button></>
                 )}
                 {showRegister && <Register setShowRegister={setShowRegister} />}
-                {showLogin && <Login setShowLogin={setShowLogin} />}
+                {showLogin && <Login setShowLogin={setShowLogin} localStorage={localStorage} setCurrentUser={setCurrentUser}/>}
             </ReactMapGL>
         </div>
     )
